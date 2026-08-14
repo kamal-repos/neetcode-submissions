@@ -1,0 +1,27 @@
+class Solution {
+    public boolean isValid(String s) {
+
+        Map<Character, Character> closeToOpen = Map.of(')', '(', ']', '[', '}', '{');
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+
+            if (closeToOpen.containsKey(c)) {
+                if (stack.empty()) {
+                    return false;
+                } else {
+                    if (stack.peek() == closeToOpen.get(c)) {
+                       stack.pop();
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                stack.push(c);
+            }
+        }
+
+        return stack.empty();
+       
+    }
+}
