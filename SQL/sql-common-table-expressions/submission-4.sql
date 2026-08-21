@@ -1,0 +1,63 @@
+CREATE TABLE customers (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  name TEXT
+);
+
+CREATE TABLE orders (
+  id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  customer_id INTEGER,
+  price INTEGER
+);
+
+INSERT INTO customers (name) VALUES
+  ('Alice'),
+  ('Bob'),
+  ('Charlie'),
+  ('David'),
+  ('Eve'),
+  ('Frank'),
+  ('Grace'),
+  ('Hank');
+
+INSERT INTO orders (customer_id, price) VALUES
+  (1, 50),
+  (2, 100),
+  (3, 150),
+  (4, 200),
+  (5, 250),
+  (6, 30),
+  (7, 70),
+  (8, 400);
+-- Do not modify above this line. --
+
+
+
+-- SELECT c.name FROM customers c
+-- WHERE EXISTS ( SELECT 1 FROM orders o WHERE o.customer_id = c.id AND price < 100)
+-- ORDER BY c.name ASC;
+
+-- SELECT c.name FROM customers c
+-- WHERE c.id = ANY(
+--   SELECT DISTINCT o.customer_id FROM orders o WHERE o.price < 100
+-- )
+-- ORDER BY c.name ASC;
+
+WITH orders_price_lt_100 AS (
+  SELECT * FROM orders 
+  WHERE price < 100
+)
+
+SELECT c.name 
+FROM customers c
+JOIN orders_price_lt_100 o
+ON c.id = o.customer_id
+ORDER BY c.name ASC;
+
+
+
+
+
+
+
+
+
